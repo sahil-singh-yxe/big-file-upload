@@ -1,70 +1,112 @@
-import logo from './logo.svg';
-import { useState } from 'react';
-import './App.css';
+import React, { useState, useEffect } from 'react';
+import AWS from 'aws-sdk';
+import axios from 'axios';
+import uuid from 'react-uuid';
 
-import ReactS3 from 'react-s3';
-
-import AWS from 'aws-sdk'
-
-const S3_BUCKET ='test306603';
-const REGION ='us-east-1';
-
-
-AWS.config.update({
-    accessKeyId: 'AKIA5JIEG6VWZTGLWFNO',
-    secretAccessKey: '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'
-})
-
-const myBucket = new AWS.S3({
-    params: { Bucket: S3_BUCKET},
-    region: REGION,
-})
-
- 
-const config = {
-    bucketName: 'test306603',
-    // dirName: 'photos', /* optional */
+const s3 = new AWS.S3({
+    accessKeyId: 'AKIASSWWRIZRM3OTXF4W',
+    secretAccessKey: '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',
     region: 'us-east-1',
-    accessKeyId: 'AKIA5JIEG6VWZTGLWFNO',
-    secretAccessKey: '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',
+});
+
+const UploadLargeFile = () => {
+    const [file, setFile] = useState(null);
+    const [progress, setProgress] = useState(0);
+    const [a, setA] = useState(null);
+    const [b, setB] = useState(null);
+    const [isInvalid, setIsInvalid] = useState(false);
+    const [url, setUrl] = useState(false);
+    const [url2, setUrl2] = useState(false);
+    
+    useEffect(() => {
+        if (window.location.pathname !== '/') {
+            const x = window.location.pathname.split('/')[1];
+            setB(x);
+            axios.post('https://p0siw891bf.execute-api.us-east-1.amazonaws.com/prod/file-upload', `${x}--get`).then((e) => {
+                    setA(e.data)
+                    const res = e.data.res.Items.filter(e=>e.userFriendlyUrl === x);
+                    if(res.length === 0){
+                        setIsInvalid(true);
+                    } else {
+
+console.log(res[0], 'oooo');
+
+                        setUrl(res[0].url);
+                        setUrl2(res[0].userFriendlyUrl);
+                    }
+                  
+                })
+        }
+    }, [])
+
+    const handleFileChange = e => {
+        setFile(e.target.files[0]);
+    };
+
+    const handleUpload = () => {
+        setA(null)
+        const a = file.name.split('.');
+        a.splice(a.length - 1, 0, Date.now());
+
+        const name = a.join('.');
+
+        const params = {
+            Bucket: 'testproj101',
+            Key: name,
+            Body: file,
+            ContentType: file.type,
+            ACL: 'public-read'
+        };
+
+        const options = {
+            partSize: 10 * 1024 * 1024, // 10 MB
+            queueSize: 1 // Number of concurrent uploads
+        };
+
+        console.log(params, 'paramsparams');
+        console.log(options, 'optionsoptions')
+
+        s3.upload(params, options, (err, data) => {
+            if (err) {
+                console.log('Error uploading file:', err);
+            } else {
+                console.log('File uploaded successfully:', data);
+                axios.post('https://p0siw891bf.execute-api.us-east-1.amazonaws.com/prod/file-upload', `${name}--post`).then((e) => {
+                    setA(e.data)
+                })
+
+            }
+        })
+            .on('httpUploadProgress', progress => {
+                const percentage = Math.round((progress.loaded / progress.total) * 100);
+                setProgress(percentage);
+            });
+    };
+
+
+    console.log(isInvalid, 'isInvalid')
+
+if(isInvalid){
+    return(<h1>Invalid URL Provided</h1>)
+    
 }
 
-function App() {
+
+    return (
+        <div>
+            {b ? <div>
+                <h3>download</h3>
+                {url && <a href={`https://testproj101.s3.amazonaws.com/${url}`} target="_blank">{url2} Click to download</a>}
+            </div> : <>
+                <input type="file" onChange={handleFileChange} />
+                <button onClick={handleUpload}>Upload</button>
+                {progress > 0 && <p>Progress: {progress}%</p>}
+                {a}
+            </>}
 
 
+        </div>
+    );
+};
 
-  const [progress , setProgress] = useState(0);
-  const [selectedFile, setSelectedFile] = useState(null);
-
-  const handleFileInput = (e) => {
-      setSelectedFile(e.target.files[0]);
-  }
-
-  const uploadFile = (file) => {
-
-      const params = {
-          ACL: 'public-read',
-          Body: file,
-          Bucket: S3_BUCKET,
-          Key: file.name
-      };
-
-      myBucket.putObject(params)
-          .on('httpUploadProgress', (evt) => {
-              setProgress(Math.round((evt.loaded / evt.total) * 100))
-          })
-          .send((err) => {
-              if (err) console.log(err)
-          })
-  }
-
-  return (
-    <div className="App">
-     <div>File Upload Progress is {progress}%</div>
-        <input type="file" onChange={handleFileInput}/>
-        <button onClick={() => uploadFile(selectedFile)}> Upload to S3</button>
-    </div>
-  );
-}
-
-export default App;
+export default UploadLargeFile;
