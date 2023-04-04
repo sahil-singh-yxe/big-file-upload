@@ -2,6 +2,7 @@
   text-align: center;
 }
 
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
@@ -32,7 +33,87 @@
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
+}
+
+.test {
+  height: 100vh;
+  width: 100vw;
+  background-color: #FFC0C7;
+}
+
+.test .cp .MuiSvgIcon-root {
+  height: 2em;
+  width: 2em;
+}
+
+.test .MuiTypography-root {
+  margin: unset;
+}
+
+.test .pp-o {
+  position: relative;
+  padding: 2rem
+}
+
+.test .link-button {
+  bottom: 35px;
+  left: 30%;
+  position: absolute;
+  border: 0px;
+}
+
+.test .MuiCircularProgress-root {
+  width: 250px !important;
+  height: 250px !important;
+  transform: unset !important;
+}
+
+.test .MuiOutlinedInput-input {
+  padding: 10px
+}
+
+.test .MuiInputBase-input {
+  min-width: 240px;
+}
+
+.test .cc {
+  margin-top: 1rem;
+}
+
+.test .link-button-again {
+  bottom: 35px;
+  left: 20%;
+  position: absolute;
+  border: 0px;
+}
+
+/* .download-icon {
+  width: 250px !important;
+  height: 250px !important;
+  transform: unset !important;
+  margin-left: 18px;
+} */
+
+.text-dd .MuiInputBase-input {
+  min-width: 280px;
+}
+
+
+.test .download-icon {
+  font-size: 10rem;
+}
+
+.pp .MuiFab-root {
+  width: 200px;
+  height: 200px;
+  margin: 50px;
+}
+
+.pp {
+  position: relative;
+  padding: 2rem
 }
