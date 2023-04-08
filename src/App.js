@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import AWS from 'aws-sdk';
 import axios from 'axios';
-import uuid from 'react-uuid';
+// import uuid from 'react-uuid';
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
+// import CardActions from '@mui/material/CardActions';
+// import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import { Input, Fab } from '@mui/material';
+import { Fab } from '@mui/material';
 import AddIcon from "@mui/icons-material/Add";
 import CircularProgress from '@mui/material/CircularProgress';
 import './App.css'
@@ -61,7 +61,7 @@ const UploadLargeFile = () => {
     const [b, setB] = useState(null);
     const [isInvalid, setIsInvalid] = useState(null);
     const [url, setUrl] = useState(false);
-    const [url2, setUrl2] = useState(false);
+    // const [url2, setUrl2] = useState(false);
 
     useEffect(() => {
         if (window.location.pathname !== '/') {
@@ -74,7 +74,7 @@ const UploadLargeFile = () => {
                     setIsInvalid(true);
                 } else {
                     setUrl(res[0].url);
-                    setUrl2(res[0].userFriendlyUrl);
+                    // setUrl2(res[0].userFriendlyUrl);
                 }
 
             })
@@ -137,10 +137,10 @@ const UploadLargeFile = () => {
     if (b) {
         const urlToDownload = `${preURL}/${b}`
 
-console.log(url, 'urlurlurl')
         return (<div className='test' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
             <Paper elevation={3} sx={{ minWidth: 300, height: 400 }}>
-                <a className='pp' href={`https://testproj101.s3.amazonaws.com/${url}`} target="_blank">
+                {/* eslint-disable-next-line  */}
+                <a className='pp' href={`https://testproj101.s3.amazonaws.com/${url}`} target="_blank" rel="noopener">
                     <Fab color="primary" size="large" component="div" aria-label="download">
                         <DownloadIcon className='download-icon' />
                     </Fab></a>
