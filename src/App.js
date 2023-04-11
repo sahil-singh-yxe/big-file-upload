@@ -20,7 +20,10 @@ import DownloadIcon from '@mui/icons-material/Download';
 
 
 
-const preURL = 'http://localhost:3000'
+const preURL = 'https://d3h7w3t8nvcc5d.cloudfront.net'
+// 'http://localhost:3000'
+
+
 
 const s3 = new AWS.S3({
     accessKeyId: 'AKIASSWWRIZRM3OTXF4W',
