@@ -16,6 +16,18 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - run: npm install
+      
+      # ESLint and Prettier must be in `package.json`
+      - name: Install Node.js dependencies
+        run: npm ci
+
+      - name: Run linters
+        uses: wearerequired/lint-action@v2
+        with:
+          eslint: true
+          prettier: true
+          
+      - name: Build the proejct  
       - run: npm run build
       - uses: jakejarvis/s3-sync-action@master
         with:
