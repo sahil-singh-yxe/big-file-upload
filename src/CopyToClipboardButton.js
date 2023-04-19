@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { useState } from "react";
 import { IconButton, Snackbar } from "@mui/material";
 import ShareIcon from "@mui/icons-material/Share";
