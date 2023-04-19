@@ -1,3 +1,5 @@
+// prettier-ignore
+/* eslint-disable */
 import React, { useState, useEffect } from 'react';
 import AWS from 'aws-sdk';
 import axios from 'axios';
