@@ -16,6 +16,8 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - run: npm install
+      - run: npm install eslint   # step 1: install ESLint
+      - run: npx eslint .         # step 3: run ESLint
       - run: npm run build
       - uses: jakejarvis/s3-sync-action@master
         with:
