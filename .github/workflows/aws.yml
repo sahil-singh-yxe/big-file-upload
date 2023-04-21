@@ -16,6 +16,7 @@ jobs:
     steps:
       - uses: actions/checkout@v1
       - run: npm install
+      - run: npm run test
       - run: npm run format
       - run: npm run lint ./src         # step 2: run ESLint
       - run: npm run build
